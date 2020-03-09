@@ -33,7 +33,13 @@ class SteamEvent : public greenworks::SteamClient::Observer {
   void OnDLCInstalled(AppId_t dlc_app_id) override;
   void OnMicroTxnAuthorizationResponse(uint32 AppID,
                                        uint64 OrderID,
-                                       bool Autorized) override;
+                                       bool Autorized) override;                                
+  void OnUGCItemInstalled(AppId_t app_id,
+                          PublishedFileId_t published_file_id) override;
+  void OnRemoteStoragePublishedFileSubscribed(PublishedFileId_t published_file_id,
+                                              AppId_t app_id) override;
+  void OnRemoteStoragePublishedFileUnsubscribed(PublishedFileId_t published_file_id,
+                                                AppId_t app_id) override;
 
  private:
   const Nan::Persistent<v8::Object>& persistent_steam_events_;

@@ -81,3 +81,27 @@ Returns:
 * `authorized` Boolean: if user authorized transaction.
 
 Emitted after a user has responded to a microtransaction authorization request.
+
+### Event: 'ugc-item-installed'
+
+Returns:
+* `app_id` Integer: AppID for which an item was installed
+* `published_file_id` String: 64-bit id of the installed item
+
+Emitted after Steam has successfully installed a Workshop item.
+
+### Event: 'ugc-item-subscribed'
+
+Returns:
+* `app_id` Integer: AppID for which an item was subscribed
+* `published_file_id` String: 64-bit id of the subscribed item
+
+Emitted after the user has subscribed to a Workshop item in Steam.
+
+### Event: 'ugc-item-unsubscribed'
+
+Returns:
+* `app_id` Integer: AppID for which an item was unsubscribed
+* `published_file_id` String: 64-bit id of the unsubscribed item
+
+Emitted after the user has unsubscribed from a Workshop item in Steam.

@@ -125,4 +125,43 @@ void SteamEvent::OnMicroTxnAuthorizationResponse(uint32 AppID,
   ar.runInAsyncScope(
       Nan::New(persistent_steam_events_), "on", 4, argv);
 }
+
+void SteamEvent::OnUGCItemInstalled(AppId_t app_id, PublishedFileId_t published_file_id) {
+  Nan::HandleScope scope;
+  v8::Local<v8::Value> argv[] = {
+      Nan::New("ugc-item-installed").ToLocalChecked(),
+      Nan::New(app_id),
+      Nan::New(utils::uint64ToString(published_file_id)).ToLocalChecked(),
+  };
+  Nan::AsyncResource ar("greenworks:SteamEvent.OnUGCItemInstalled");
+  ar.runInAsyncScope(
+      Nan::New(persistent_steam_events_), "on", 3, argv);
+}
+
+void SteamEvent::OnRemoteStoragePublishedFileSubscribed(PublishedFileId_t published_file_id,
+                                                        AppId_t app_id) {
+  Nan::HandleScope scope;
+  v8::Local<v8::Value> argv[] = {
+      Nan::New("ugc-item-subscribed").ToLocalChecked(),
+      Nan::New(app_id),
+      Nan::New(utils::uint64ToString(published_file_id)).ToLocalChecked(),
+  };
+  Nan::AsyncResource ar("greenworks:SteamEvent.OnRemoteStoragePublishedFileSubscribed");
+  ar.runInAsyncScope(
+      Nan::New(persistent_steam_events_), "on", 3, argv);
+}
+
+void SteamEvent::OnRemoteStoragePublishedFileUnsubscribed(PublishedFileId_t published_file_id,
+                                                          AppId_t app_id) {
+  Nan::HandleScope scope;
+  v8::Local<v8::Value> argv[] = {
+      Nan::New("ugc-item-unsubscribed").ToLocalChecked(),
+      Nan::New(app_id),
+      Nan::New(utils::uint64ToString(published_file_id)).ToLocalChecked(),
+  };
+  Nan::AsyncResource ar("greenworks:SteamEvent.OnRemoteStoragePublishedFileUnsubscribed");
+  ar.runInAsyncScope(
+      Nan::New(persistent_steam_events_), "on", 3, argv);
+}
+
 }  // namespace greenworks

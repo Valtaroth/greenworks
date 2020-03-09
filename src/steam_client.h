@@ -34,6 +34,12 @@ class SteamClient {
     virtual void OnMicroTxnAuthorizationResponse(uint32 AppID,
                                                  uint64 OrderID,
                                                  bool Autorized) = 0;
+    virtual void OnUGCItemInstalled(AppId_t app_id,
+                                    PublishedFileId_t published_file_id) = 0;
+    virtual void OnRemoteStoragePublishedFileSubscribed(PublishedFileId_t published_file_id,
+                                                        AppId_t app_id) = 0;
+    virtual void OnRemoteStoragePublishedFileUnsubscribed(PublishedFileId_t published_file_id,
+                                                          AppId_t app_id) = 0;
     virtual ~Observer() {}
   };
 
@@ -78,6 +84,19 @@ class SteamClient {
                  OnMicroTxnAuthorizationResponse,
                  MicroTxnAuthorizationResponse_t,
                  MicroTxnAuthorizationResponse_);
+  STEAM_CALLBACK(SteamClient, 
+                 OnUGCItemInstalled, 
+                 ItemInstalled_t, 
+                 ugc_item_installed_);
+  STEAM_CALLBACK(SteamClient, 
+                 OnRemoteStoragePublishedFileSubscribed, 
+                 RemoteStoragePublishedFileSubscribed_t, 
+                 ugc_item_subscribed_);
+  STEAM_CALLBACK(SteamClient, 
+                 OnRemoteStoragePublishedFileUnsubscribed, 
+                 RemoteStoragePublishedFileUnsubscribed_t, 
+                 ugc_item_unsubscribed_);
+  
 };
 
 }  // namespace greenworks

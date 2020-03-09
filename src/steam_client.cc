@@ -46,7 +46,10 @@ SteamClient::SteamClient()
       dlc_installed_(this, &SteamClient::OnDLCInstalled),
       MicroTxnAuthorizationResponse_(
           this,
-          &SteamClient::OnMicroTxnAuthorizationResponse) {}
+          &SteamClient::OnMicroTxnAuthorizationResponse),
+      ugc_item_installed_(this, &SteamClient::OnUGCItemInstalled),
+      ugc_item_subscribed_(this, &SteamClient::OnRemoteStoragePublishedFileSubscribed),
+      ugc_item_unsubscribed_(this, &SteamClient::OnRemoteStoragePublishedFileUnsubscribed) {}
 
 SteamClient::~SteamClient() {
   for (size_t i = 0; i < observer_list_.size(); ++i) {
@@ -136,6 +139,27 @@ void SteamClient::OnMicroTxnAuthorizationResponse(
     observer_list_[i]->OnMicroTxnAuthorizationResponse(
         callback->m_unAppID, callback->m_ulOrderID,
         callback->m_bAuthorized);
+  }
+}
+
+void SteamClient::OnUGCItemInstalled(ItemInstalled_t *callback) {
+  for (size_t i = 0; i < observer_list_.size(); ++i) {
+    observer_list_[i]->OnUGCItemInstalled(
+        callback->m_unAppID, callback->m_nPublishedFileId);
+  }
+}
+
+void SteamClient::OnRemoteStoragePublishedFileSubscribed(RemoteStoragePublishedFileSubscribed_t *callback) {
+  for (size_t i = 0; i < observer_list_.size(); ++i) {
+    observer_list_[i]->OnRemoteStoragePublishedFileSubscribed(
+        callback->m_nPublishedFileId, callback->m_nAppID);
+  }
+}
+
+void SteamClient::OnRemoteStoragePublishedFileUnsubscribed(RemoteStoragePublishedFileUnsubscribed_t *callback) {
+  for (size_t i = 0; i < observer_list_.size(); ++i) {
+    observer_list_[i]->OnRemoteStoragePublishedFileUnsubscribed(
+        callback->m_nPublishedFileId, callback->m_nAppID);
   }
 }
 
